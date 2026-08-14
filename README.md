@@ -10,26 +10,25 @@ Ten adres instaluje wyłącznie niewielki loader. Właściwy Menedżer Ataków p
 
 ## Pierwsze uruchomienie
 
-1. Utwórz na GitHubie token typu **Fine-grained personal access token**.
-2. W `Repository access` wybierz **Only select repositories** i zaznacz `landek-menedzer-atakow`.
-3. W `Repository permissions` ustaw wyłącznie **Contents: Read-only**. Uprawnienie `Metadata: Read-only` zostanie dodane automatycznie.
-4. Zainstaluj loader ze stałego adresu powyżej.
-5. Otwórz Plemiona.pl i wklej token do okna loadera. Token zostanie zapisany tylko lokalnie przez Tampermonkey.
+1. Zainstaluj loader ze stałego adresu powyżej.
+2. Otwórz Plemiona.pl i odśwież stronę.
+3. Wpisz kod dostępu otrzymany od administratora.
+4. Kod zostanie przypisany do tej instalacji, a loader zapisze wyłącznie sesję dostępu.
 
-Token można później zmienić lub usunąć z menu Tampermonkey:
+Sesję można później sprawdzić lub usunąć z menu Tampermonkey:
 
-- `Landek: ustaw lub zmień token GitHub`
-- `Landek: usuń token i cache`
+- `Landek: pokaż status dostępu`
+- `Landek: usuń sesję z tej przeglądarki`
 
 ## Aktualizowanie Menedżera
 
 Edytuj i wypchnij plik `landek.user.js` na gałąź `main` prywatnego repozytorium `landeq/landek-menedzer-atakow`. Loader pomija cache GitHuba i przy następnym `F5` pobierze aktualny plik. Zwiększanie `@version` rdzenia nie jest wymagane do tego mechanizmu.
 
-Loader zachowuje ostatnią poprawnie pobraną wersję jako lokalną kopię awaryjną. Korzysta z niej tylko przy problemie sieciowym, limicie GitHub API lub awarii serwera. Błędny token nie uruchamia kopii awaryjnej.
+Loader nie przechowuje kopii rdzenia do pracy offline. Aktywna sesja jest kontrolowana przy F5 i okresowo w czasie działania.
 
 ## Bezpieczeństwo
 
-- Nigdy nie wpisuj tokenu bezpośrednio do pliku ani commita.
-- Token powinien mieć dostęp tylko do odczytu jednego repozytorium.
-- W razie podejrzenia ujawnienia natychmiast unieważnij token w ustawieniach GitHuba.
+- Token GitHub do prywatnego rdzenia znajduje się wyłącznie jako sekret Workera Cloudflare.
+- Nigdy nie wpisuj sekretu, tokenu administratora ani działającego kodu dostępu do pliku lub commita.
+- W razie podejrzenia ujawnienia kodu lub sesji administrator może natychmiast cofnąć dostęp.
 - Publiczny kod tego repozytorium nie zawiera właściwego Menedżera Ataków ani tokenu.
