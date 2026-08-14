@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Landek - Menedżer Ataków
 // @namespace    https://github.com/landeq/landek-loader
-// @version      2.0.0
+// @version      2.1.0
 // @description  Licencjonowany loader prywatnego Menedżera Ataków Landek.
 // @homepageURL  https://github.com/landeq/landek-loader
 // @supportURL   https://github.com/landeq/landek-loader/issues
@@ -157,7 +157,8 @@
                     body: { code, installationId: installationId() }
                 });
                 GM_setValue(STORAGE.sessionToken, result.sessionToken);
-                GM_setValue(STORAGE.expiresAt, Number(result.expiresAt || 0));
+                if (result.permanent) GM_deleteValue(STORAGE.expiresAt);
+                else GM_setValue(STORAGE.expiresAt, Number(result.expiresAt || 0));
                 input.value = '';
                 removeDialog();
                 await loadLicensedCore();
@@ -265,8 +266,10 @@
         }
         try {
             const result = await request('/v1/status');
-            const expires = new Date(Number(result.expiresAt) * 1000).toLocaleString('pl-PL', { hour12: false });
-            unsafeWindow.alert(`Dostęp aktywny do: ${expires}`);
+            const expires = result.permanent || result.expiresAt == null
+                ? 'bezterminowo'
+                : new Date(Number(result.expiresAt) * 1000).toLocaleString('pl-PL', { hour12: false });
+            unsafeWindow.alert(`Dostęp aktywny: ${expires}`);
         } catch (error) {
             unsafeWindow.alert(`Status licencji: ${error.message}`);
         }
